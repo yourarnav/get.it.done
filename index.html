@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart To-Do List</title>
+    <style>
+        /* Your existing CSS remains the same */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .container.dark {
+            background: #444;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 2.5em;
+            margin: 0;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .location-time {
+            font-size: 1.2em;
+            color: #333;
+            margin-top: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .location-time.dark {
+            color: #ddd;
+        }
+
+        .task-input {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="text"], input[type="date"], select {
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            flex: 1;
+        }
+
+        .btn-grad {
+            background-image: linear-gradient(to right, #FF8008 0%, #FFC837 51%, #FF8008 100%);
+            margin: 10px;
+            padding: 15px 45px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            display: block;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .btn-grad:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            position: relative;
+            font-size: 1.1em;
+        }
+
+        .task-item.completed {
+            background: #eee;
+            opacity: 0.7;
+        }
+
+        .task-item.completed span {
+            text-decoration: line-through;
+        }
+
+        .category {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 12px;
+            margin-left: 15px;
+        }
+
+        .due-date {
+            font-size: 0.9em;
+            color: #666;
+            margin-left: 15px;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 12px;
+        }
+
+        .toggle-container {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .toggle-button {
+            width: 50px;
+            height: 25px;
+            background: #f5f5f5;
+            border-radius: 25px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
+        }
+
+        .toggle-button .toggle-circle {
+            width: 20px;
+            height: 20px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            position: absolute;
+            top: 2.5px;
+            left: 2.5px;
+            transition: left 0.3s, background 0.3s;
+        }
+
+        .toggle-button.active {
+            background: #4CAF50;
+        }
+
+        .toggle-button.active .toggle-circle {
+            left: 27.5px;
+            background: #ff5722;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ff5252;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: none;
+        }
+
+        .task-item:hover .delete-btn {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="toggle-container">
+            <div class="toggle-button" onclick="toggleDarkMode()">
+                <div class="toggle-circle"></div>
+            </div>
+        </div>
+        <div class="header">
+            <h2>Get.It.Done</h2>
+            <div class="location-time" id="locationTime"></div>
+        </div>
+        
+        <div class="task-input">
+            <input type="text" id="newTask" placeholder="Add a new task">
+            <input type="date" id="dueDate">
+            <select id="category">
+                <option value="">No Category</option>
+                <option value="personal-development">💡 Personal Development</option>
+                <option value="finance">💰 Finance</option>
+                <option value="education">📚 Education</option>
+                <option value="family">👨👩👧 Family</option>
+                <option value="social">🌐 Social</option>
+                <option value="errands">🛒 Errands</option>
+                <option value="hobbies">🎨 Hobbies</option>
+                <option value="travel">✈️ Travel</option>
+                <option value="deadlines">⏰ Deadlines</option>
+                <option value="home">🏠 Home</option>
+            </select>
+            <button class="btn-grad" onclick="addTask()">Add Task</button>
+        </div>
+
+        <ul class="task-list" id="taskList"></ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti"></script>
+    <script>
+        // IndexedDB setup
+        let db;
+        const dbName = 'TodoDB';
+        const dbVersion = 1;
+        const storeName = 'tasks';
+
+        // Initialize IndexedDB
+        const request = indexedDB.open(dbName, dbVersion);
+
+        request.onerror = (event) => {
+            console.error('Database error:', event.target.error);
+        };
+
+        request.onupgradeneeded = (event) => {
+            db = event.target.result;
+            if (!db.objectStoreNames.contains(storeName)) {
+                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            loadTasks();
+        };
+
+        // Load tasks from IndexedDB
+        function loadTasks() {
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const getAllRequest = store.getAll();
+
+            getAllRequest.onsuccess = () => {
+                const tasks = getAllRequest.result;
+                renderTasks(tasks);
+            };
+        }
+
+        // Save task to IndexedDB
+        function saveTask(task) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
+            store.add(task);
+
+            transaction.oncomplete = () => {
+                loadTasks();
+            };
+        }
+
+        // Delete task from IndexedDB
+        function deleteTaskFromDB(id) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
+            store.delete(id);
+
+            transaction.oncomplete = () => {
+                loadTasks();
+            };
+        }
+
+        // Update task in IndexedDB
+        function updateTask(task) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
+            store.put(task);
+
+            transaction.oncomplete = () => {
+                loadTasks();
+            };
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            return now.toLocaleString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        function updateTimeDisplay() {
+            const timeElement = document.getElementById('locationTime');
+            timeElement.innerHTML = `🕒 ${updateDateTime()}`;
+            setInterval(() => {
+                timeElement.innerHTML = `🕒 ${updateDateTime()}`;
+            }, 1000);
+        }
+
+        function renderTasks(tasks) {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach((task) => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                    <span>${task.text}</span>
+                    ${task.dueDate ? `<span class="due-date">Due: ${task.dueDate}</span>` : ''}
+                    ${task.category ? `<span class="category ${task.category}">${task.category}</span>` : ''}
+                    <button class="delete-btn" onclick="deleteTask(${task.id})">&times;</button>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        function addTask() {
+            const input = document.getElementById('newTask');
+            const category = document.getElementById('category').value;
+            const dueDate = document.getElementById('dueDate').value;
+            
+            if (input.value.trim()) {
+                const newTask = {
+                    text: input.value.trim(),
+                    category,
+                    dueDate: dueDate || null,
+                    completed: false
+                };
+                
+                saveTask(newTask);
+                
+                input.value = '';
+                document.getElementById('dueDate').value = '';
+            }
+        }
+
+        function toggleTask(id) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const request = store.get(id);
+
+            request.onsuccess = () => {
+                const task = request.result;
+                task.completed = !task.completed;
+                updateTask(task);
+
+                if (task.completed) {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+            };
+        }
+
+        function deleteTask(id) {
+            deleteTaskFromDB(id);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            document.querySelector('.container').classList.toggle('dark');
+            document.querySelector('.location-time').classList.toggle('dark');
+            const toggleButton = document.querySelector('.toggle-button');
+            toggleButton.classList.toggle('active');
+        }
+
+        updateTimeDisplay();
+    </script>
+</body>
+</html>
