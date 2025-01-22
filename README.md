@@ -97,16 +97,17 @@ Contributions are welcome! Feel free to fork the project and submit a pull reque
 
 ------
 
-## 🛡️ License
-
-This project is licensed under the [MIT License](https://chatgpt.com/c/LICENSE). Feel free to use, modify, and distribute this app as per the license terms.
-
-------
-
 ## 🧑‍💻 Author
 
 **[Arnav Attri](https://github.com/yourarnav)**
  Passionate about creating intuitive and user-friendly web applications.
 
 ------
+
+
+## 🛡️ License
+
+This project is licensed under the [MIT License](https://chatgpt.com/c/LICENSE). Feel free to use, modify, and distribute this app as per the license terms.
+
+----
 
