@@ -137,7 +137,6 @@
             background: #f0f0f0;
             border-radius: 12px;
         }
-
         .toggle-container {
             position: absolute;
             top: 10px;
@@ -225,8 +224,9 @@
             width: 100%;
         }
 
-        /* New styles for edit mode */
+        /* Edit mode styles */
         .edit-mode input[type="text"],
+        .edit-mode input[type="date"],
         .edit-mode select {
             padding: 8px;
             border: 1px solid #ddd;
@@ -279,6 +279,15 @@
 
         .edit-category-select {
             flex: 1;
+        }
+
+        .edit-date-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 1em;
+            min-width: 120px;
         }
     </style>
 </head>
@@ -363,7 +372,6 @@
                 addTask();
             }
         });
-
         function loadTasks() {
             const transaction = db.transaction([storeName], 'readonly');
             const store = transaction.objectStore(storeName);
@@ -467,7 +475,6 @@
                 timeElement.innerHTML = `🕒 ${updateDateTime()}`;
             }, 1000);
         }
-
         function renderTasks(tasks) {
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
@@ -538,8 +545,6 @@
         function deleteTask(id) {
             deleteTaskFromDB(id);
         }
-
-        // New edit functions
         function startEdit(taskId) {
             const transaction = db.transaction([storeName], 'readonly');
             const store = transaction.objectStore(storeName);
@@ -552,7 +557,7 @@
                 // Save the original content
                 li.dataset.originalContent = li.innerHTML;
                 
-                // Create edit mode content
+                // Create edit mode content with date input
                 li.innerHTML = `
                     <input type="text" class="edit-task-input" value="${task.text}">
                     <select class="edit-category-select">
@@ -568,6 +573,7 @@
                         <option value="deadlines">⏰ Deadlines</option>
                         <option value="home">🏠 Home</option>
                     </select>
+                    <input type="date" class="edit-date-input" value="${task.dueDate || ''}">
                     <div class="edit-buttons">
                         <button class="save-btn" onclick="saveEdit(${taskId})">Save</button>
                         <button class="cancel-btn" onclick="cancelEdit(${taskId})">Cancel</button>
@@ -584,6 +590,7 @@
             const li = document.querySelector(`li[data-task-id="${taskId}"]`);
             const newText = li.querySelector('.edit-task-input').value.trim();
             const newCategory = li.querySelector('.edit-category-select').value;
+            const newDueDate = li.querySelector('.edit-date-input').value;
 
             if (newText) {
                 const transaction = db.transaction([storeName], 'readwrite');
@@ -594,6 +601,7 @@
                     const task = request.result;
                     task.text = newText;
                     task.category = newCategory;
+                    task.dueDate = newDueDate || null;
                     updateTask(task);
                 };
             }
