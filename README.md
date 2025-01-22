@@ -1,31 +1,32 @@
-
-
-------
-
 # 📋 Smart To-Do List App
 
 **Smart To-Do List** is a sleek, modern task management app designed to help you organize your day efficiently. With features like task categorization, due dates, dark mode, and data persistence using IndexedDB, this app is perfect for users looking for an intuitive and privacy-friendly to-do solution.
 
-Have to add screenshots
+![App Screenshot 1](screenshot1.png)
+![App Screenshot 2](screenshot2.png)
 
-------
+---
 
 ## 🚀 Features
 
 - **💡 Task Management**: Add, edit, and delete tasks with ease.
 - **🗓️ Due Dates**: Assign due dates to tasks for better planning.
-- **📂 Categorization**: Group tasks into categories like Personal Development, Finance, Education, and more.
+- **🗂 Categorization**: Group tasks into categories like Personal Development, Finance, Education, and more.
 - **🌙 Dark Mode**: Toggle between light and dark themes for better user experience.
 - **🔒 Persistent Data Storage**: Tasks are stored locally using IndexedDB, ensuring your data remains safe even if the browser history is cleared.
 - **🎉 Fun Animations**: Celebrate task completion with a confetti effect!
+- **🔍 Search Functionality**: Easily search tasks using keywords to quickly find what you need.
+- **🎨 Sort Options**: Sort tasks by due date, category, or name for better organization.
+- **✏️ Edit After Adding**: Quickly edit tasks after adding them for better flexibility.
 
-------
+---
+
 ## 🌐 Live Demo
 
 Check out the live version of the app hosted on GitHub Pages:
- [Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
+[Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
 
-------
+---
 
 ## 🛠️ Technologies Used
 
@@ -35,21 +36,17 @@ Check out the live version of the app hosted on GitHub Pages:
 - **IndexedDB** for persistent, local task storage.
 - **Canvas Confetti** for fun task completion effects.
 
-------
+---
 
 ## 🖥️ Installation and Setup
 
-1. Clone the repository
-
-   :
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/your-username/smart-todo-app.git
    ```
 
-2. Navigate to the project folder
-
-   :
+2. Navigate to the project folder:
 
    ```bash
    cd smart-todo-app
@@ -57,15 +54,18 @@ Check out the live version of the app hosted on GitHub Pages:
 
 3. **Open `index.html` in your browser** to start using the app.
 
-------
+---
 
 ## ✨ How It Works
 
 1. **Add Tasks**: Enter your task, set a due date, and choose a category.
-2. **Complete Tasks**: Mark tasks as complete to celebrate with a confetti animation.
-3. **Persistent Storage**: All tasks are saved locally using IndexedDB, ensuring your data remains intact.
+2. **Search Tasks**: Use the search bar to quickly locate tasks using keywords.
+3. **Sort Tasks**: Organize your tasks by due date, category, or name using the sorting dropdown.
+4. **Edit Tasks**: Modify tasks immediately after adding them or later if needed.
+5. **Complete Tasks**: Mark tasks as complete to celebrate with a confetti animation.
+6. **Persistent Storage**: All tasks are saved locally using IndexedDB, ensuring your data remains intact.
 
-------
+---
 
 ## 🖤 Contributing
 
@@ -95,18 +95,16 @@ Contributions are welcome! Feel free to fork the project and submit a pull reque
 
 5. Submit a pull request.
 
-------
+---
 
-## 🧑‍💻 Author
+## 🤝 Author
 
-**[Arnav Attri](https://github.com/yourarnav)**
- Passionate about creating intuitive and user-friendly web applications.
+**[Arnav Attri](https://github.com/yourarnav)**  
+Passionate about creating intuitive and user-friendly web applications.
 
-------
-
+---
 
 ## 🛡️ License
 
 This project is licensed under the [MIT License](https://chatgpt.com/c/LICENSE). Feel free to use, modify, and distribute this app as per the license terms.
-
 
