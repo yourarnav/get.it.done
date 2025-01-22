@@ -43,6 +43,14 @@ Have to add screenshots
 
 ------
 
+
+## 🌐 Live Demo
+
+Check out the live version of the app hosted on GitHub Pages:
+ [Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
+
+------
+
 ## 🖥️ Installation and Setup
 
 1. Clone the repository
@@ -62,15 +70,6 @@ Have to add screenshots
    ```
 
 3. **Open `index.html` in your browser** to start using the app.
-
-------
-
-## 🌐 Live Demo
-
-Check out the live version of the app hosted on GitHub Pages:
- [Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
-
-
 
 ------
 
