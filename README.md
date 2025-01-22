@@ -120,7 +120,7 @@ This project is licensed under the [MIT License](https://chatgpt.com/c/LICENSE).
 
 ## 🧑‍💻 Author
 
-**[Arnav Attri](https://github.com/your-username)**
+**[Arnav Attri]((https://github.com/yourarnav))**
  Passionate about creating intuitive and user-friendly web applications.
 
 ------
