@@ -109,5 +109,4 @@ Contributions are welcome! Feel free to fork the project and submit a pull reque
 
 This project is licensed under the [MIT License](https://chatgpt.com/c/LICENSE). Feel free to use, modify, and distribute this app as per the license terms.
 
-----
 
