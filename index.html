@@ -191,6 +191,95 @@
         .task-item:hover .delete-btn {
             display: block;
         }
+
+        .search-sort-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 2;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 50%;
+            padding: 12px 12px 12px 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .sort-container {
+            flex: 1;
+        }
+
+        .sort-container select {
+            width: 100%;
+        }
+
+        /* New styles for edit mode */
+        .edit-mode input[type="text"],
+        .edit-mode select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 1em;
+        }
+
+        .edit-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 10px;
+            display: none;
+        }
+
+        .task-item:hover .edit-btn {
+            display: block;
+        }
+
+        .save-btn, .cancel-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
+
+        .save-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .edit-task-input {
+            flex: 2;
+        }
+
+        .edit-category-select {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -205,6 +294,21 @@
             <div class="location-time" id="locationTime"></div>
         </div>
         
+        <div class="search-sort-container">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search tasks...">
+            </div>
+            <div class="sort-container">
+                <select id="sortOption">
+                    <option value="default">Sort by...</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="category">Category</option>
+                    <option value="name">Name</option>
+                </select>
+            </div>
+        </div>
+
         <div class="task-input">
             <input type="text" id="newTask" placeholder="Add a new task">
             <input type="date" id="dueDate">
@@ -229,13 +333,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti"></script>
     <script>
-        // IndexedDB setup
         let db;
         const dbName = 'TodoDB';
         const dbVersion = 1;
         const storeName = 'tasks';
 
-        // Initialize IndexedDB
         const request = indexedDB.open(dbName, dbVersion);
 
         request.onerror = (event) => {
@@ -254,14 +356,14 @@
             loadTasks();
         };
 
-        // Add event listener for Enter key
+        document.getElementById('searchInput').addEventListener('input', filterAndSortTasks);
+        document.getElementById('sortOption').addEventListener('change', filterAndSortTasks);
         document.getElementById('newTask').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 addTask();
             }
         });
 
-        // Load tasks from IndexedDB
         function loadTasks() {
             const transaction = db.transaction([storeName], 'readonly');
             const store = transaction.objectStore(storeName);
@@ -269,11 +371,51 @@
 
             getAllRequest.onsuccess = () => {
                 const tasks = getAllRequest.result;
+                filterAndSortTasks(tasks);
+            };
+        }
+
+        function filterAndSortTasks() {
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const getAllRequest = store.getAll();
+
+            getAllRequest.onsuccess = () => {
+                let tasks = getAllRequest.result;
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const sortOption = document.getElementById('sortOption').value;
+
+                if (searchTerm) {
+                    tasks = tasks.filter(task => 
+                        task.text.toLowerCase().includes(searchTerm) ||
+                        (task.category && getCategoryLabel(task.category).toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                switch (sortOption) {
+                    case 'dueDate':
+                        tasks.sort((a, b) => {
+                            if (!a.dueDate) return 1;
+                            if (!b.dueDate) return -1;
+                            return new Date(a.dueDate) - new Date(b.dueDate);
+                        });
+                        break;
+                    case 'category':
+                        tasks.sort((a, b) => {
+                            const catA = getCategoryLabel(a.category || '');
+                            const catB = getCategoryLabel(b.category || '');
+                            return catA.localeCompare(catB);
+                        });
+                        break;
+                    case 'name':
+                        tasks.sort((a, b) => a.text.localeCompare(b.text));
+                        break;
+                }
+
                 renderTasks(tasks);
             };
         }
 
-        // Save task to IndexedDB
         function saveTask(task) {
             const transaction = db.transaction([storeName], 'readwrite');
             const store = transaction.objectStore(storeName);
@@ -284,7 +426,6 @@
             };
         }
 
-        // Delete task from IndexedDB
         function deleteTaskFromDB(id) {
             const transaction = db.transaction([storeName], 'readwrite');
             const store = transaction.objectStore(storeName);
@@ -295,7 +436,6 @@
             };
         }
 
-        // Update task in IndexedDB
         function updateTask(task) {
             const transaction = db.transaction([storeName], 'readwrite');
             const store = transaction.objectStore(storeName);
@@ -334,11 +474,14 @@
             tasks.forEach((task) => {
                 const li = document.createElement('li');
                 li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.dataset.taskId = task.id;
+                
                 li.innerHTML = `
                     <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
-                    <span>${task.text}</span>
+                    <span class="task-text">${task.text}</span>
                     ${task.category ? `<span class="category">${getCategoryLabel(task.category)}</span>` : ''}
                     ${task.dueDate ? `<span class="due-date">Due: ${task.dueDate}</span>` : ''}
+                    <button class="edit-btn" onclick="startEdit(${task.id})">✎</button>
                     <button class="delete-btn" onclick="deleteTask(${task.id})">&times;</button>
                 `;
                 taskList.appendChild(li);
@@ -368,7 +511,7 @@
                 
                 input.value = '';
                 document.getElementById('dueDate').value = '';
-                categorySelect.value = ''; // Reset category to "No Category"
+                categorySelect.value = '';
             }
         }
 
@@ -394,6 +537,71 @@
 
         function deleteTask(id) {
             deleteTaskFromDB(id);
+        }
+
+        // New edit functions
+        function startEdit(taskId) {
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.get(taskId);
+
+            request.onsuccess = () => {
+                const task = request.result;
+                const li = document.querySelector(`li[data-task-id="${taskId}"]`);
+                
+                // Save the original content
+                li.dataset.originalContent = li.innerHTML;
+                
+                // Create edit mode content
+                li.innerHTML = `
+                    <input type="text" class="edit-task-input" value="${task.text}">
+                    <select class="edit-category-select">
+                        <option value="">No Category</option>
+                        <option value="personal-development">💡 Personal Development</option>
+                        <option value="finance">💰 Finance</option>
+                        <option value="education">📚 Education</option>
+                        <option value="family">👨👩👧 Family</option>
+                        <option value="social">🌐 Social</option>
+                        <option value="errands">🛒 Errands</option>
+                        <option value="hobbies">🎨 Hobbies</option>
+                        <option value="travel">✈️ Travel</option>
+                        <option value="deadlines">⏰ Deadlines</option>
+                        <option value="home">🏠 Home</option>
+                    </select>
+                    <div class="edit-buttons">
+                        <button class="save-btn" onclick="saveEdit(${taskId})">Save</button>
+                        <button class="cancel-btn" onclick="cancelEdit(${taskId})">Cancel</button>
+                    </div>
+                `;
+
+                // Set the current category
+                const categorySelect = li.querySelector('.edit-category-select');
+                categorySelect.value = task.category || '';
+            };
+        }
+
+        function saveEdit(taskId) {
+            const li = document.querySelector(`li[data-task-id="${taskId}"]`);
+            const newText = li.querySelector('.edit-task-input').value.trim();
+            const newCategory = li.querySelector('.edit-category-select').value;
+
+            if (newText) {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.get(taskId);
+
+                request.onsuccess = () => {
+                    const task = request.result;
+                    task.text = newText;
+                    task.category = newCategory;
+                    updateTask(task);
+                };
+            }
+        }
+
+        function cancelEdit(taskId) {
+            const li = document.querySelector(`li[data-task-id="${taskId}"]`);
+            li.innerHTML = li.dataset.originalContent;
         }
 
         function toggleDarkMode() {
