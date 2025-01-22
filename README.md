@@ -20,16 +20,10 @@ Have to add screenshots
 - **🎉 Fun Animations**: Celebrate task completion with a confetti effect!
 
 ------
+## 🌐 Live Demo
 
-## 📸 Screenshots
-
-### Light Mode:
-
-![Light Mode Screenshot](url) 
-
-### Dark Mode:
-
-![Dark Mode Screenshot](url) 
+Check out the live version of the app hosted on GitHub Pages:
+ [Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
 
 ------
 
@@ -40,14 +34,6 @@ Have to add screenshots
 - **JavaScript (Vanilla)** for interactive functionalities.
 - **IndexedDB** for persistent, local task storage.
 - **Canvas Confetti** for fun task completion effects.
-
-------
-
-
-## 🌐 Live Demo
-
-Check out the live version of the app hosted on GitHub Pages:
- [Smart To-Do List App](https://yourarnav.github.io/get.it.done/)
 
 ------
 
