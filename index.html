@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart To-Do List</title>
     <style>
-        /* Your existing CSS remains the same */
         body {
             font-family: Arial, sans-serif;
             max-width: 900px;
@@ -124,8 +123,10 @@
         .category {
             font-size: 0.9em;
             padding: 5px 10px;
-            border-radius: 12px;
+            border-radius: 6px;
             margin-left: 15px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
         }
 
         .due-date {
@@ -253,6 +254,13 @@
             loadTasks();
         };
 
+        // Add event listener for Enter key
+        document.getElementById('newTask').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
         // Load tasks from IndexedDB
         function loadTasks() {
             const transaction = db.transaction([storeName], 'readonly');
@@ -329,23 +337,29 @@
                 li.innerHTML = `
                     <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
                     <span>${task.text}</span>
+                    ${task.category ? `<span class="category">${getCategoryLabel(task.category)}</span>` : ''}
                     ${task.dueDate ? `<span class="due-date">Due: ${task.dueDate}</span>` : ''}
-                    ${task.category ? `<span class="category ${task.category}">${task.category}</span>` : ''}
                     <button class="delete-btn" onclick="deleteTask(${task.id})">&times;</button>
                 `;
                 taskList.appendChild(li);
             });
         }
 
+        function getCategoryLabel(categoryValue) {
+            const categorySelect = document.getElementById('category');
+            const option = Array.from(categorySelect.options).find(opt => opt.value === categoryValue);
+            return option ? option.text : categoryValue;
+        }
+
         function addTask() {
             const input = document.getElementById('newTask');
-            const category = document.getElementById('category').value;
+            const categorySelect = document.getElementById('category');
             const dueDate = document.getElementById('dueDate').value;
             
             if (input.value.trim()) {
                 const newTask = {
                     text: input.value.trim(),
-                    category,
+                    category: categorySelect.value,
                     dueDate: dueDate || null,
                     completed: false
                 };
@@ -354,6 +368,7 @@
                 
                 input.value = '';
                 document.getElementById('dueDate').value = '';
+                categorySelect.value = ''; // Reset category to "No Category"
             }
         }
 
