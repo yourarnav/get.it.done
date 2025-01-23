@@ -28,13 +28,13 @@ Check out the live version of the app hosted on GitHub Pages:
 
 ---
 
-## 🛠️ Technologies Used
+# 🛠️ Tech Stack
 
-- **HTML5** for the app structure.
-- **CSS3** for modern and responsive styling.
-- **JavaScript (Vanilla)** for interactive functionalities.
-- **IndexedDB** for persistent, local task storage.
-- **Canvas Confetti** for fun task completion effects.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Confetti.js](https://img.shields.io/badge/Confetti.js-FF69B4?style=for-the-badge&logo=javascript&logoColor=white)
+![Font Awesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)
 
 ---
 
