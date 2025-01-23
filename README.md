@@ -38,24 +38,6 @@ Check out the live version of the app hosted on GitHub Pages:
 
 ---
 
-## 🖥️ Installation and Setup
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/smart-todo-app.git
-   ```
-
-2. Navigate to the project folder:
-
-   ```bash
-   cd smart-todo-app
-   ```
-
-3. **Open `index.html` in your browser** to start using the app.
-
----
-
 ## ✨ How It Works
 
 1. **Add Tasks**: Enter your task, set a due date, and choose a category.
@@ -64,36 +46,6 @@ Check out the live version of the app hosted on GitHub Pages:
 4. **Edit Tasks**: Modify tasks immediately after adding them or later if needed.
 5. **Complete Tasks**: Mark tasks as complete to celebrate with a confetti animation.
 6. **Persistent Storage**: All tasks are saved locally using IndexedDB, ensuring your data remains intact.
-
----
-
-## 🖤 Contributing
-
-Contributions are welcome! Feel free to fork the project and submit a pull request with your improvements.
-
-### Steps to Contribute:
-
-1. Fork this repository.
-
-2. Create a new branch:
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-3. Commit your changes:
-
-   ```bash
-   git commit -m "Add your message here"
-   ```
-
-4. Push to your branch:
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-5. Submit a pull request.
 
 ---
 
