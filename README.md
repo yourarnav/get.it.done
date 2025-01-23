@@ -99,7 +99,8 @@ Contributions are welcome! Feel free to fork the project and submit a pull reque
 
 ## 🤝 Author
 
-**[Arnav Attri](https://github.com/yourarnav)**  
+Made with ❤️ by [Arnav Attri](https://github.com/yourarnav) 
+
 Passionate about creating intuitive and user-friendly web applications.
 
 ---
