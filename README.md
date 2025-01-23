@@ -2,7 +2,8 @@
 
 **Smart To-Do List** is a sleek, modern task management app designed to help you organize your day efficiently. With features like task categorization, due dates, dark mode, and data persistence using IndexedDB, this app is perfect for users looking for an intuitive and privacy-friendly to-do solution.
 
-[Imgur](https://imgur.com/SzW7jhY)
+![screenshot](https://i.imgur.com/SzW7jhY.jpg)
+
 
 ---
 
